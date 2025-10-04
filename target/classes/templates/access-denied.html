@@ -1,0 +1,19 @@
+<html th:replace="~{fragments/header :: header(~{::title}, ~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org">
+    
+    <title>Access Denied</title>
+    
+    <div id="main-content">
+        <h2 style="color: red;">Access Denied!</h2>
+        
+        <p>You do not have the necessary permissions to view this page.</p>
+        
+        <div style="margin-top: 30px;">
+            <a th:href="@{/}" class="btn-primary">Go to Home</a>
+            <a th:href="@{/logout}" class="btn-primary" style="background: #6c757d;">Logout</a>
+        </div>
+
+    </div>
+    
+<div th:replace="~{fragments/footer :: footer}"></div>
+</html>

@@ -1,0 +1,69 @@
+<html th:replace="~{fragments/header :: layout(pageTitle=~{::title}, pageContent=~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+    <title>Admin - Manage Locations</title>
+    
+    <div id="main-content">
+        <h2>Location Management</h2>
+        
+        <div th:if="${successMessage}" class="alert-success" th:text="${successMessage}">Location action successful.</div>
+        <div th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}">Location action failed.</div>
+
+        <hr/>
+
+        <h4>Add New Location</h4>
+        <form th:action="@{/admin/locations/save}" th:object="${newLocation}" method="post" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 30px;">
+            
+            <input type="hidden" th:field="*{locationId}" /> 
+            
+            <div class="form-group">
+                <label for="name">Hotel Name / Identifier:</label>
+                <input type="text" id="name" th:field="*{name}" required>
+            </div>
+            
+            <div class="form-group" style="width: 48%; float: left; margin-right: 4%;">
+                <label for="city">City:</label>
+                <input type="text" id="city" th:field="*{city}" required>
+            </div>
+
+            <div class="form-group" style="width: 48%; float: left;">
+                <label for="address">Full Address:</label>
+                <input type="text" id="address" th:field="*{address}">
+            </div>
+            <div style="clear: both;"></div>
+            
+            <button type="submit" class="btn-primary" th:text="Save Location"></button>
+        </form>
+        <div style="clear: both;"></div>
+        
+        <hr/>
+
+        <h4>Current Locations</h4>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Rooms Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="location : ${locations}">
+                    <td th:text="${location.locationId}">1</td>
+                    <td th:text="${location.name}">Grand Hyatt NYC</td>
+                    <td th:text="${location.city}">New York</td>
+                    <td th:text="${location.address}">123 Main St</td>
+                    <td th:text="${#lists.size(location.rooms)}">0</td> <td>
+                        <a href="#" style="color: blue;">Edit</a> | 
+                        <a href="#" style="color: red;">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</html>

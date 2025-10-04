@@ -1,0 +1,272 @@
+/* =======================================
+   1. BASE STYLES & LAYOUT
+   ======================================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* Light background for the body */
+    color: #333;
+    margin: 0;
+}
+
+/* Footer position is often set with custom CSS or Bootstrap utilities. 
+   Keeping this generic, assuming position is managed in HTML structure or by Bootstrap. */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    /* If you want a fixed footer, uncomment these lines: */
+    /* position: fixed; */
+    /* bottom: 0; */
+    /* width: 100%; */
+}
+
+/* =======================================
+   2. HEADER & NAVIGATION
+   ======================================= */
+
+header {
+    background: #007bff; /* Primary Blue */
+    color: white;
+    padding-top: 20px;
+    min-height: 70px;
+    border-bottom: #0056b3 3px solid;
+}
+
+header h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+header ul {
+    padding: 0;
+    list-style: none;
+    float: right; /* Keeps the entire list aligned to the right */
+    margin-top: 0;
+}
+
+/* --- FIX APPLIED HERE --- */
+header li {
+    /* REMOVED: float: left; which caused overlapping/bunching */
+    display: inline-block; /* Allows vertical stacking of items within the float flow */
+    padding: 0 10px; 
+}
+
+header li a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+/* --- User Profile Dropdown Styles --- */
+
+.user-dropdown-container {
+    position: relative; 
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.user-name-link {
+    display: block;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: none;
+}
+
+.user-dropdown-content {
+    display: none; 
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user-dropdown-content a {
+    color: #333;
+    padding: 8px 10px;
+    text-decoration: none;
+    display: block; /* Forces vertical stacking of links inside the box */
+    text-align: left;
+    text-transform: none;
+}
+
+.user-dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.user-dropdown-container:hover .user-dropdown-content {
+    display: block;
+}
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    padding: 5px 0 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.user-profile-header img {
+    margin-right: 10px;
+}
+
+/* General Navbar Link Spacing (Overrides Bootstrap's default margin) */
+header li {
+    padding: 0 10px;
+}
+
+/* Custom button hover for the primary color */
+.btn-primary:hover {
+    background: #0056b3;
+    /* Ensure no border appears on hover, as Bootstrap sometimes adds one */
+    border-color: #0056b3; 
+}
+
+/* =======================================
+   3. FORMS, BUTTONS & ALERTS
+   ======================================= */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    display: inline-block;
+    color: #fff;
+    background: #007bff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+/* User Profile Header inside the dropdown menu */
+.user-profile-header {
+    /* Uses flex for aligning image and username */
+    display: flex;
+    align-items: center;
+    padding: 5px 0 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #007bff;
+    
+    /* Override Bootstrap dropdown-item padding/margin to prevent styling issues */
+    margin-left: 0 !important; 
+    margin-right: 0 !important;
+}
+
+.user-profile-header img {
+    margin-right: 10px;
+}
+
+/* =======================================
+   4. TABLES
+   ======================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.alert-error {
+    /* Maps to the general application error state */
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-success {
+    /* Maps to the general application success state */
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+/* =======================================
+   5. FOOTER
+   ======================================= */
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+}

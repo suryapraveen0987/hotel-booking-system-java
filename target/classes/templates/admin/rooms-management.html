@@ -1,0 +1,132 @@
+<html th:replace="~{fragments/header :: layout(pageTitle=~{::title}, pageContent=~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+    <title>Admin - Manage Rooms</title>
+    
+    <div id="main-content" class="pb-5">
+        <h2 class="mt-3 mb-4" th:text="'Welcome, ' + ${#authentication.name} + ' (Admin)'"></h2>
+        <h3 class="mb-3">Room Inventory Management</h3>
+
+        <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}">
+            Room data successfully saved or updated!
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+            Error processing room action.
+        </div>
+        <hr/>
+
+        <h4 th:text="${newRoom.roomId != null ? 'Edit Room #' + newRoom.roomNumber : 'Add New Room'}" class="mb-3">Add New Room / Edit Existing Room</h4>
+        
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form th:action="@{/admin/rooms/save}" th:object="${newRoom}" method="post">
+                    
+                    <input type="hidden" th:field="*{roomId}" /> 
+                    
+                    <div class="mb-3">
+                        <label for="location" class="form-label fw-bold">Location:</label>
+                        <select id="location" th:field="*{location}" class="form-select" required>
+                            <option value="">-- Select Location --</option>
+                            <option th:each="loc : ${locations}" 
+                                    th:value="${loc.locationId}" 
+                                    th:text="${loc.name + ' (' + loc.city + ')'}"
+                                    th:selected="${newRoom.location != null and newRoom.location.locationId == loc.locationId}">
+                                NYC Hotel
+                            </option>
+                        </select>
+                        <p class="mt-2" style="font-size: 0.9em;">
+                            <a th:href="@{/admin/locations}">Manage Locations</a>
+                        </p>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="roomNumber" class="form-label">Room Number:</label>
+                            <input type="text" id="roomNumber" th:field="*{roomNumber}" class="form-control" th:attr="readonly=${newRoom.roomId != null}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="roomType" class="form-label">Room Type:</label>
+                            <input type="text" id="roomType" th:field="*{roomType}" class="form-control" placeholder="e.g., Single, Suite" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="price" class="form-label">Price Per Night (Decimal):</label>
+                            <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01" min="0.01" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="capacity" class="form-label">Capacity (Guests):</label>
+                            <input type="number" id="capacity" th:field="*{capacity}" class="form-control" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="isAvailable" th:field="*{isAvailable}">
+                        <label class="form-check-label" for="isAvailable">Is Available</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" th:text="${newRoom.roomId != null ? 'Update Room' : 'Add New Room'}">Save Room</button>
+                    
+                    <a th:if="${newRoom.roomId != null}" th:href="@{/admin/rooms}" class="btn btn-secondary ms-2">Cancel Edit</a>
+
+                </form>
+            </div>
+        </div>
+        
+        <hr class="mt-4"/>
+
+        <h4 class="mb-3">Current Room Inventory</h4>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Number</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Capacity</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="room : ${rooms}">
+                    <td th:text="${room.roomId}">1</td>
+                    <td th:text="${room.roomNumber}">101</td>
+                    <td>
+                        <span th:if="${room.location}" th:text="${room.location.name + ' (' + room.location.city + ')'}">Location Name</span>
+                        <span th:unless="${room.location}" class="text-danger fw-bold">[No Location]</span>
+                    </td>
+                    <td th:text="${room.roomType}">Double</td>
+                    <td th:text="${#numbers.formatDecimal(room.price, 0, 'COMMA', 2, 'POINT')}">150.00</td>
+                    <td th:text="${room.capacity}">2</td>
+                    <td>
+                        <span th:if="${room.isAvailable}" class="badge bg-success">Yes</span>
+                        <span th:unless="${room.isAvailable}" class="badge bg-danger">No</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/rooms/edit/{id}(id=${room.roomId})}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                        
+                        <form th:action="@{/admin/rooms/delete/{id}(id=${room.roomId})}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('WARNING: Deleting room ' + [[${room.roomNumber}]] + ' may fail if it has active bookings. Are you sure?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</html>

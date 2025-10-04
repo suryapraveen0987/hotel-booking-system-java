@@ -1,0 +1,50 @@
+<html th:replace="~{fragments/header :: layout(pageTitle=~{::title}, pageContent=~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org">
+    
+    <title>User Login</title>
+    
+    <div id="main-content" class="pt-5 pb-5"> 
+        
+        <div class="card p-4 mx-auto shadow" style="max-width: 400px;">
+            <h2 class="text-center mb-4">User Login</h2>
+
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Invalid username or password.
+            </div>
+            
+            <div th:if="${param.success}" class="alert alert-success" role="alert">
+                Registration successful! Please login with your new account.
+            </div>
+            
+            <form th:action="@{/login}" method="post">
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           class="form-control" 
+                           autocomplete="username" 
+                           required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           class="form-control"
+                           autocomplete="current-password" 
+                           required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            
+            <p class="text-center mt-3">
+                Don't have an account? <a th:href="@{/register}">Register here</a>
+            </p>
+        </div>
+    </div>
+    
+</html>

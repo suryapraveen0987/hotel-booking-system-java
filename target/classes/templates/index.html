@@ -1,0 +1,25 @@
+<html th:replace="~{fragments/header :: header(~{::title}, ~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org">
+    
+    <title>Welcome</title>
+    
+    <div id="main-content">
+        <h2>Welcome to the Hotel Booking System!</h2>
+        
+        <p>Your one-stop solution for finding and booking the perfect hotel room.</p>
+        
+        <div style="background: #e9ecef; padding: 20px; border-radius: 5px; text-align: center; margin-top: 30px;">
+            <h3>Start Your Search</h3>
+            <p>Ready to find a room? Click below to check availability.</p>
+            <a th:href="@{/search}" class="btn-primary" style="font-size: 1.2em;">Search Rooms Now</a>
+        </div>
+        
+        <p style="margin-top: 20px;">
+            If you are an existing user, please <a th:href="@{/login}">Login</a>. 
+            New users can <a th:href="@{/register}">Register</a> here.
+        </p>
+
+    </div>
+    
+<div th:replace="~{fragments/footer :: footer}"></div>
+</html>

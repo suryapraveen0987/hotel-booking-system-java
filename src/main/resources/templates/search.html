@@ -1,0 +1,91 @@
+<html th:replace="~{fragments/header :: layout(pageTitle=~{::title}, pageContent=~{::#main-content})}" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+    <title>Search & Book Rooms</title>
+    
+    <div id="main-content" class="pb-5">
+        <h2 class="mb-4">Find Available Rooms</h2>
+
+        <div class="card p-4 mb-4 shadow-sm">
+            <h5 class="card-title text-primary mb-3">Your Dates & Filters</h5>
+
+            <form id="search-form" th:action="@{/rooms/available}" method="get">
+                
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="checkInDate" class="form-label">Check-in Date:</label>
+                        <input type="date" id="checkInDate" name="checkInDate" class="form-control" th:value="${checkInDate}" required>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="checkOutDate" class="form-label">Check-out Date:</label>
+                        <input type="date" id="checkOutDate" name="checkOutDate" class="form-control" th:value="${checkOutDate}" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="locationId" class="form-label">Location:</label>
+                        <select id="locationId" name="locationId" class="form-select">
+                            <option value="">All Locations</option>
+                            <option th:each="loc : ${allLocations}" 
+                                    th:value="${loc.locationId}" 
+                                    th:text="${loc.name + ' (' + loc.city + ')'}">
+                                Location Name
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <hr/>
+        
+        <h3 class="mb-3">Search Results</h3>
+        
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+            An error occurred during search or booking.
+        </div>
+        <div th:if="${availableRooms.size() > 0}" class="alert alert-info">
+            Available Rooms: <span th:text="${availableRooms.size()}">0</span> found.
+        </div>
+        <div th:unless="${availableRooms.size() > 0}" class="alert alert-warning">
+            No rooms found for the selected dates. Please try different dates.
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+            <div th:each="room : ${availableRooms}" class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        
+                        <h5 class="card-title text-primary" th:text="${room.roomType} + ' - Room ' + ${room.roomNumber}">Standard Room - Room 101</h5>
+                        
+                        <h6 class="card-subtitle mb-2 text-muted" th:if="${room.location}">
+                            <small th:text="${room.location.name + ' (' + room.location.city + ')'}">Location Name</small>
+                        </h6>
+
+                        <ul class="list-unstyled mt-3">
+                            <li><strong>Price:</strong> $<span th:text="${#numbers.formatDecimal(room.price, 0, 'COMMA', 2, 'POINT')}">150.00</span> per night</li>
+                            <li><strong>Capacity:</strong> <span th:text="${room.capacity}">2</span> guests</li>
+                        </ul>
+                        
+                        <p class="card-text text-muted small" th:text="${room.description}">A cozy room with a queen-sized bed and city view.</p>
+                        
+                        <form th:action="@{/booking/create/{roomId}(roomId=${room.roomId})}" method="post" class="mt-3">
+                            <input type="hidden" name="checkInDate" th:value="${checkInDate}" />
+                            <input type="hidden" name="checkOutDate" th:value="${checkOutDate}" />
+                            
+                            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-success btn-sm w-100">Book Now</button>
+                            <p sec:authorize="!isAuthenticated()" class="text-danger small mt-2">
+                                Please <a th:href="@{/login}">login</a> to book this room.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
